@@ -1,0 +1,185 @@
+div{
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    display:inline-block;
+    margin-top:0;
+}
+
+.progbarout {
+    border-radius: 15px;
+    width:100%;
+    height:21px;
+    background-color: black;
+    position:relative;
+    text-align:left;
+    color:black;
+}
+.progbarSizer {
+    width:calc(100% - 6px);
+    position:absolute;
+}
+.progbarin {
+    border-radius: 12px;
+    background-color: rgb(255, 0, 0);
+    height:15px;
+    margin:3px;
+    position:absolute;
+}
+
+.exp{
+    position:absolute;
+    color:white;
+    font-size:12px;
+    right:50%;
+    top:4px;
+}
+
+.score{
+    position:absolute;
+    color:white;
+    font-size:12px;
+    right:20px;
+    top:4px;
+}
+
+.scoreTransfer{
+    position:absolute;
+    color:white;
+    font-size:12px;
+    right:75px;
+    top:4px;
+}
+
+.scoreGrowth{
+    position:absolute;
+    font-size:12px;
+    right:-80px;
+    width:70px;
+    top:4px;
+
+
+}
+
+.speed{
+    position:absolute;
+    color:black;
+    font-size:12px;
+    right:-100px;
+    top:4px;
+}
+
+.buybutton {
+    color:black;
+    position:absolute;
+    font-size:12px;
+    background-color:white;
+    border-radius:2px;
+    cursor:pointer;
+    border:2px solid black;
+}
+
+.buyscore {
+    right:-283px;
+    width:134px;
+}
+
+.buyexp {
+    right:-427px;
+    width:134px;
+}
+
+.buyspeed {
+    right:-571px;
+    width:134px;s
+}
+
+.buytransfer {
+    right:-715px;
+    width:134px;
+}
+
+.unbuyable {
+    background-color: grey;
+}
+
+.quickButton {
+    margin-left:10px;
+    width:71px;
+    background-color:black;
+    font-size:14px;
+    color:white;
+    cursor:pointer;
+    border:3px solid grey;
+    border-radius:5px;
+    padding:3px;
+}
+.middleLabel {
+    text-align:center;
+    font-size:16px;
+    position:relative;
+    display:block;
+}
+
+.buttonContainer {
+    width:10%;
+    margin-top:5px;
+    vertical-align:top;
+}
+
+.countCost {
+    font-size:20px;
+    margin-top:5px;
+    margin-bottom:5px;
+    display:inline-block;
+    color:blue;
+    font-weight:bold;
+    margin-left:10px;
+}
+
+.buyButton {
+    width:115px;
+    height:50px;
+    margin-bottom:7px;
+    font-size:12px;
+    border:2px solid grey;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+
+.objectContainer {
+    width:100%;
+    font-size:0;
+    margin:0;
+}
+
+.Title {
+    width: 100%;
+    height:20px;
+    font-size:14px;
+    font-weight:bold;
+}
+
+.disabled {
+    width:0px;
+    height:0px;
+    margin-bottom:0px;
+    font-size:0px;
+    border:0px solid grey;
+    border-radius:0px;
+    cursor:pointer;
+}
+
+.presButton {
+    width:100px;
+    height: 20px;
+    font-size:14px;
+    cursor:pointer;
+    border:3px solid grey;
+    border-radius:5px;
+    font-size:14px;
+    font-weight:normal;
+}

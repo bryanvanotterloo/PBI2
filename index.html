@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html class='objectContainer'>
+    <head>
+        <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+        <title>PGB</title>
+        <link rel="stylesheet" href="stylesheets/stylesheet.css">
+
+        <script src="angular.min.js"></script>
+        <script src="classes/display.js"></script>
+        <script src="classes/pbar.js"></script>
+        <script src="classes/globalButtons.js"></script>
+        <script src="classes/numConvert.js"></script>
+        <script src="classes/Saver.js"></script>
+        <!--<script src="classes1/helpers.js"></script>
+        
+        <-->
+    </head>
+    <body data-ng-app="myApp" ng-controller="myCtrl" class='objectContainer' style='width:100%;text-align:center;position:absolute;font-family:Arial, Helvetica, serif;'>
+        <div id='progressBars' style='margin-top:10px;display:block;width:50%' ng-show="!hideRows" class='objectContainer'>
+
+        
+        </div>
+        <div id='buttons' class='objectContainer'></div>
+        <div class='Title objectContainer'>Prestige Points: {{converter(prestigePoints)}} </div>
+        <div data-ng-click="prestige()" class='presButton objectContainer'>Prestige {{converter(presExpected)}}</div>
+        <div id='Presbuttons' class='objectContainer buttonContainer'></div>
+
+
+        <div data-ng-click="clearSave()" style='float:left;width:75px' class='hyperVisible quickButton '>Clear Save</div>
+       <!-- <div data-ng-click="toggleStartStop()" class='hyperVisible quickButton ' style="float:left;">Toggle Start / Stop (for debug)</div>-->
+    </body>
+</html>
+
+<script>
+
+
+
+var stop = 0;
+var timer = 0;
+var startingBars = 1;
+var timeUntilNextBar = -500;
+
+var multFromFps = 1;
+
+var globalVars;
+
+var app = angular.module('myApp', []);
+app.controller('myCtrl', function($scope, $interval, $compile) {
+    globalVars = $scope;
+    $scope.Math = window.Math;
+    var buttons = new globalButtons($scope);
+    
+    $scope.buyProgbar = buttons.buyProgbar;
+    $scope.autoBuyer1 = buttons.autoBuyer1;
+    $scope.autobuy1 = buttons.autoBuy1;
+    $scope.autoBuyer2 = buttons.autoBuyer2;
+    $scope.autobuy2 = buttons.autoBuy2;
+    $scope.autoBuyer3 = buttons.autoBuyer3;
+    $scope.autobuy3 = buttons.autoBuy3;
+    $scope.autoBuyer4 = buttons.autoBuyer4;
+    $scope.autobuy4 = buttons.autoBuy4;
+    $scope.buyGS = buttons.buyGS;
+    $scope.buyGSp = buttons.buyGSp;
+    $scope.buyGExp = buttons.buyGExp;
+    $scope.presExpected = 0;
+    $scope.progBars = []
+
+    $scope.tick = function() {
+        if(stop) {
+            return;
+        }
+        timer++;
+
+        for(var i = 0; i < $scope.progBars.length; i++){
+            $scope.progBars[i].update($scope.progBars[i+1]);
+            
+
+            $scope.progBars[i].updateBuyables();
+            if (i > 0)
+            {
+                $scope.progBars[i].TransAmt($scope.progBars[i-1]);
+            }
+            
+
+        }
+
+        if (timer % 10 == 0)
+        {
+
+            for(var i = 0; i < $scope.progBars.length; i++){
+
+                $scope.autobuy1($scope.progBars[i]);
+                $scope.autobuy2($scope.progBars[i]);
+                $scope.autobuy3($scope.progBars[i]);
+                $scope.autobuy4($scope.progBars[i]);
+            }
+        }
+        
+
+        if (timer % 300 == 0)
+        {
+            saveGame.saveTheGame();
+        }
+
+        if(($scope.progBars.length < startingBars) && (timer - timeUntilNextBar >= 1)) {
+            $scope.addPBar();
+            timeUntilNextBar = timer;
+        }
+
+        $scope.updateBuyable();
+        
+
+        //handleFPSDifference();
+
+        //$scope.updateProgressForAllRows();
+
+        //manual addition to give starting rows
+        //if(($scope.pbars.length < initialRowCount) && (timer - timeUntilNextBar >= 25)) {
+        //    $scope.addProgressBar();
+        //    timeUntilNextBar = timer;
+        //}
+        //if(timer - timeUntilNextSave >= 300) {
+        //    saveGame.saveTheGame();
+        //    timeUntilNextSave = timer;
+        //}
+    };
+    
+    $scope.converter = converter;
+    var display = new Display($scope);
+    $scope.addProgressBarUI = function () {
+        var newDiv = angular.element(display.createProgBar($scope.progBars.length - 1));
+        var progressBarContainer = document.getElementById('progressBars');
+        angular.element(progressBarContainer).append(newDiv);
+        $compile(newDiv)($scope);
+    };
+
+    $scope.addPBar = function() {
+        if ($scope.progBars.length > 0){
+            $scope.progBars.unshift(new pbar($scope, $scope.progBars.length, $scope.progBars.length,$scope.progBars[0]));
+            console.log($scope.progBars[$scope.progBars.length-1]);
+            //$scope.progBars[1].setNext($scope.progBars[0]);
+        }
+        else {
+            $scope.progBars.unshift(new pbar($scope, $scope.progBars.length, null));
+        }
+        $scope.addProgressBarUI();
+    }
+
+    var doWork = new Worker('timing.js');
+    doWork.onmessage = function (event) {
+            if (event.data === 'start.tick') {
+                $scope.$apply($scope.tick());
+            }
+        };
+    doWork.postMessage({start: true, ms: 50});
+
+    $scope.buttonBuyable = [false,false,false,false,false,false, false,false];
+    $scope.currencyType = ['S','P','P','P','P','P','P','P'];
+    $scope.buttonNames = ['Buy Progress Bar','Buy Auto Score','Buy Auto Exp','Buy Auto Speed','Buy Auto Trans', 'Buy Score +1', 'Buy Speed + 1%', 'Buy Exp + 1'];
+    $scope.buttonFunct = ['buyProgbar','autoBuyer1','autoBuyer2','autoBuyer3','autoBuyer4','buyGS','buyGSp','buyGExp'];
+
+
+
+    $scope.addBuyButtonTemplate = function (buttonText, onclick, cost,activeButton,type) {
+            console.log(buttonText,onclick,cost);
+            var newDiv = angular.element(display.createButton(buttonText, onclick, cost,activeButton));
+            if (type == 'S'){
+                var progressBarContainer = document.getElementById('buttons');
+            }
+            else if (type == 'P')
+            {
+                var progressBarContainer = document.getElementById('Presbuttons');
+            }
+            angular.element(progressBarContainer).append(newDiv);
+            $compile(newDiv)($scope);
+        };
+
+    $scope.updateBuyable = function() {
+        for(var i = 0; i < $scope.buttonNames.length; i++){
+            if ($scope.progBars[$scope.progBars.length - 1].score >= $scope.buttonCosts[i] && $scope.currencyType[i] == 'S') {
+                $scope.buttonBuyable[i] = false
+            }
+            else if ($scope.prestigePoints >= $scope.buttonCosts[i] && $scope.currencyType[i] == 'P') {
+                $scope.buttonBuyable[i] = false
+            }
+            else{
+                $scope.buttonBuyable[i] = true
+            }
+
+        }
+    }
+
+    $scope.updatePrestigeExpected = function() {
+        $scope.presExpected = $scope.progBars[$scope.progBars.length -1].score / (10000 * (1+.1*($scope.presExpected + $scope.prestigePointsTotal))); 
+    }
+
+    $scope.prestige = function() {
+        $scope.prestigePoints += $scope.presExpected;
+        $scope.prestigePointsTotal += $scope.presExpected;
+        $scope.progBars = [];
+        var progressBarContainer = document.getElementById('progressBars');
+        progressBarContainer.innerHTML = "";
+        //$scope.globalScoreMult = 1;
+        $scope.buttonCosts[0] = 3;
+        $scope.presExpected = 0;
+        console.log($scope.prestigePointsTotal);
+
+    }
+
+    
+    for(var i = 0; i < $scope.buttonNames.length; i++){
+    $scope.addBuyButtonTemplate($scope.buttonNames[i], $scope.buttonFunct[i],i,i,$scope.currencyType[i]);
+    }
+
+    var saveGame = new SaveGame($scope);
+    saveGame.loadTheGame();
+    $scope.clearSave = saveGame.loadDefaults;
+
+});
+
+</script>
