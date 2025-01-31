@@ -1,6 +1,3 @@
-/**
- * Created by Jim on 4/23/2017.
- */
  function SaveGame(scope) {
     this.saveTheGame = function() {
         var toSave = {};
@@ -11,6 +8,7 @@
         toSave.globalSpeedMult = scope.globalSpeedMult;
         toSave.globalExpMult = scope.globalExpMult;
         toSave.prestigePoints = scope.prestigePoints;
+        toSave.startingBars = scope.startingBars;
         toSave.prestigePointsTotal = scope.prestigePointsTotal;
         toSave.activeButton = scope.activeButton;
         window.localStorage.pbars1 = JSON.stringify(toSave);
@@ -30,6 +28,7 @@
         scope.globalSpeedMult = toLoad.globalSpeedMult;
         scope.globalExpMult = toLoad.globalExpMult;
         scope.prestigePoints = toLoad.prestigePoints;
+        scope.startingBars = toLoad.startingBars;
         scope.prestigePointsTotal = toLoad.prestigePointsTotal;
         scope.activeButton = toLoad.activeButton;
         for(var x = toLoad.progBars.length - 1; x >= 0; x--) {
@@ -57,8 +56,9 @@
         scope.globalExpMult = 0;
         scope.prestigePoints = 0.0;
         scope.prestigePointsTotal = 0.0;
+        scope.startingBars = 1;
         scope.activeButton = [false,false,false,false,false,false,false,false];
-        scope.buttonCosts = [3,10000,1000,100,10,1,1,1];
-        scope.autoBuyers = [false,false,false,false];
+        scope.buttonCosts = [3,1000000,10000,1000,100,10,1,1];
+        scope.autoBuyers = [false,false,false,false,false];
     }
 }
