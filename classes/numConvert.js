@@ -16,7 +16,7 @@ function converter(num) {
 
 function addSuffix(num) {
 
-    var suffixes = ['K','M','T','B','Qa','Qu']
+    var suffixes = ['K','M','B','T','Qa','Qu','Sx','Sp','Oc','No','Dc','UDc','Ddc']
     var suffixIndex = Math.floor((Math.floor(num).toString().length-1) /3);
     var numReduced = Math.floor((num * Math.pow(10,suffixIndex * -3)) * (10 ** 1)) / (10 ** 1);
     return numReduced.toString() + suffixes[suffixIndex-1];
