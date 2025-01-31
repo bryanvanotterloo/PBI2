@@ -3,7 +3,7 @@ function Display() {
         var progBar = "progBars[" + rowcount + "]";
 
 
-        return "<div class = 'progbarout' ><div class = 'progbarSizer' ><div class = 'progbarin p{{" + progBar + ".row}}' style='width:{{" + progBar + ".progress}}%;'></div>" +
+        return "<div class = 'progbarout' ><div class = 'progbarSizer' ><div class = 'progbarin p{{" + progBar + ".row}}' style='width:{{" + progBar + ".progress}}%;background-color:{{" + progBar + ".colorDisplay()}}'></div>" +
         "<div class = 'exp p{{" + progBar + ".row}}'>Level {{converter(" + progBar + ".level)}}   {{converter(" + progBar + ".exp)}}/{{converter(Math.floor(" + progBar + ".expNeed))}}</div>" +
         "<div class = 'scoreTransfer p{{" + progBar + ".row}}'>(+{{converter(" + progBar + ".transferAmount)}})</div>" + 
         "<div class = 'score p{{" + progBar + ".row}}'>{{converter(" + progBar + ".score)}}</div>" + 
