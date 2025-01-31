@@ -1,8 +1,8 @@
 function pbar(scope,row,name)
 {
     this.progress = 0;
-    this.resGain = .3;
-    this.resGrowth = 1.1 + scope.globalSpeedMult;
+    this.resGain = .5;
+    this.resGrowth = 1.01 + scope.globalSpeedMult;
     this.row = row;
     this.name = name;
 
@@ -11,7 +11,7 @@ function pbar(scope,row,name)
     this.exp = 0.0;
     this.expGain = 1.0 + scope.globalExpMult;
     this.expNeed = 1.0;
-    this.expGrowth = 1.4;
+    this.expGrowth = 1.15;
     this.score = 0.0;
     this.scoreGrowth = scope.globalScoreMult;
     this.speed = 100;
@@ -20,7 +20,7 @@ function pbar(scope,row,name)
     this.transferAmount = 0;
 
     
-    this.upgradesCost = [5,10,100,1000]
+    this.upgradesCost = [2,5,10,1000]
     this.upgradeNames = ['Score Inc','Exp Inc','Speed Inc','Transfer Inc']
 
     this.TransAmt = function(pbarIn) {
@@ -38,7 +38,7 @@ function pbar(scope,row,name)
             if (pbarIn != null) {
 
                 pbarIn.score = pbarIn.score + Math.floor(this.score * this.transferPower * (10 ** 1)) / (10 ** 1);
-                this.score = this.score - Math.floor(this.score * this.transferPower * (10 ** 1)) / (10 ** 1);
+                //this.score = this.score - Math.floor(this.score * this.transferPower * (10 ** 1)) / (10 ** 1);
             }
 
 
@@ -59,6 +59,11 @@ function pbar(scope,row,name)
                     this.expNeed =  this.expNeed * this.expGrowth;
                     this.resGain = this.resGain * this.resGrowth;
                     this.level = this.level + 1;
+                    if (this.level % 10 == 0)
+                    {
+                        this.speed = this.speed * ( Math.pow(this.resGrowth,5));
+                        this.resGain = this.resGain * ( Math.pow(this.resGrowth,5));
+                    }
                     //this.scoreGrowth = this.scoreGrowth + (this.scoreMulti * scope.globalScoreMult);
                     this.speed = this.speed * this.resGrowth;
                 }
@@ -120,7 +125,13 @@ function pbar(scope,row,name)
 
     }
 
-    
+    this.colorDisplay = function() {
+        hue = 240 - (this.level)*1.5;
+        sat = 100;
+        light = 40;
+
+        return "hsl("+hue+", "+sat+"%, "+light+"%)"
+    }
 
     
 
