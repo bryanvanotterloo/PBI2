@@ -59,6 +59,8 @@ app.controller('myCtrl', function($scope, $interval, $compile) {
     $scope.autobuy3 = buttons.autoBuy3;
     $scope.autoBuyer4 = buttons.autoBuyer4;
     $scope.autobuy4 = buttons.autoBuy4;
+    $scope.autoBuyer5 = buttons.autoBuyer5;
+    $scope.autobuy5 = buttons.autoBuy5;
     $scope.buyGS = buttons.buyGS;
     $scope.buyGSp = buttons.buyGSp;
     $scope.buyGExp = buttons.buyGExp;
@@ -93,6 +95,7 @@ app.controller('myCtrl', function($scope, $interval, $compile) {
                 $scope.autobuy2($scope.progBars[i]);
                 $scope.autobuy3($scope.progBars[i]);
                 $scope.autobuy4($scope.progBars[i]);
+                $scope.autobuy5();
             }
         }
         
@@ -102,7 +105,7 @@ app.controller('myCtrl', function($scope, $interval, $compile) {
             saveGame.saveTheGame();
         }
 
-        if(($scope.progBars.length < startingBars) && (timer - timeUntilNextBar >= 1)) {
+        if(($scope.progBars.length < $scope.startingBars) && (timer - timeUntilNextBar >= 20)) {
             $scope.addPBar();
             timeUntilNextBar = timer;
         }
@@ -154,10 +157,10 @@ app.controller('myCtrl', function($scope, $interval, $compile) {
         };
     doWork.postMessage({start: true, ms: 50});
 
-    $scope.buttonBuyable = [false,false,false,false,false,false, false,false];
+    $scope.buttonBuyable = [false,false,false,false,false,false,false,false];
     $scope.currencyType = ['S','P','P','P','P','P','P','P'];
-    $scope.buttonNames = ['Buy Progress Bar','Buy Auto Score','Buy Auto Exp','Buy Auto Speed','Buy Auto Trans', 'Buy Score +1', 'Buy Speed + 1%', 'Buy Exp + 1'];
-    $scope.buttonFunct = ['buyProgbar','autoBuyer1','autoBuyer2','autoBuyer3','autoBuyer4','buyGS','buyGSp','buyGExp'];
+    $scope.buttonNames = ['Buy Progress Bar','Buy Auto Prog','Buy Auto Score','Buy Auto Exp','Buy Auto Speed','Buy Auto Trans', 'Buy Score +1', 'Buy Exp + 1'];
+    $scope.buttonFunct = ['buyProgbar','autoBuyer5','autoBuyer1','autoBuyer2','autoBuyer3','autoBuyer4','buyGS','buyGExp'];
 
 
 
@@ -191,7 +194,7 @@ app.controller('myCtrl', function($scope, $interval, $compile) {
     }
 
     $scope.updatePrestigeExpected = function() {
-        $scope.presExpected = $scope.progBars[$scope.progBars.length -1].score / (10000 * (1+.1*($scope.presExpected + $scope.prestigePointsTotal))); 
+        $scope.presExpected = $scope.progBars[$scope.progBars.length -1].score / (1000 ); 
     }
 
     $scope.prestige = function() {
@@ -203,6 +206,7 @@ app.controller('myCtrl', function($scope, $interval, $compile) {
         //$scope.globalScoreMult = 1;
         $scope.buttonCosts[0] = 3;
         $scope.presExpected = 0;
+        $scope.startingBars = 1;
         console.log($scope.prestigePointsTotal);
 
     }
