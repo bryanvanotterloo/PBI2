@@ -38,7 +38,7 @@ function pbar(scope,row,name)
             if (pbarIn != null) {
 
                 pbarIn.score = pbarIn.score + Math.floor(this.score * this.transferPower * (10 ** 1)) / (10 ** 1);
-                //this.score = this.score - Math.floor(this.score * this.transferPower * (10 ** 1)) / (10 ** 1);
+                this.score = this.score - Math.floor(this.score * this.transferPower * (10 ** 1)) / (10 ** 1);
             }
 
 
